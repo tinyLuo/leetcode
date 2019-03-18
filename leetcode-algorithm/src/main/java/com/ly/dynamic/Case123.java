@@ -50,22 +50,44 @@ public class Case123 {
     // }
 
     public int maxProfit(int[] prices) {
-        int fstBuy = Integer.MIN_VALUE, fstSell = 0;
-        int secBuy = Integer.MIN_VALUE, secSell = 0;
-        for (int p : prices) {
-            fstBuy = Math.max(fstBuy, -p);
-            fstSell = Math.max(fstSell, fstBuy + p);
-            secBuy = Math.max(secBuy, fstSell - p);
-            secSell = Math.max(secSell, secBuy + p);
+        if(prices == null || prices.length == 0) {
+            return 0;
         }
-        return secSell;
+        int[] dp = new int[prices.length];
+        int min = prices[0];
+        //1-i 天的最大收益
+        for(int i = 1 ; i < prices.length; i++) {
+            if(prices[i] < min) {
+                min = prices[i];
+                dp[i] = dp[i-1];
+            }else {
+                dp[i] = Math.max(dp[i-1], prices[i] - min);
+            }
+        }
+        
+        int[] dp2 = new int[prices.length];
+        int max = prices[prices.length-1];
+        for(int j = prices.length -2 ; j > 0 ; j--) {
+            if(prices[j] > max) {
+                max = prices[j];
+                dp2[j] = dp2[j+1];
+            }else {
+                dp2[j] = Math.max(dp2[j+1], max - prices[j]);
+            }
+        }
+        int sumMax = 0;
+        for(int i = 1 ; i < prices.length -2 ; i ++) {
+            sumMax = Math.max(sumMax, dp[i] + dp2[i+1]);
+        }
+        sumMax = Math.max(sumMax, dp[prices.length-1]);
+        return sumMax;
     }
 
     public static void main(String[] args) {
         Case123 case123 = new Case123();
         // System.out.println(case123.maxProfit(new int[]{3,3,5,0,0,3,1,4}));
         // System.out.println(case123.maxProfit(new int[]{1,2,3,4,5}));
-        System.out.println(case123.maxProfit(new int[] { 1, 2, 4, 2, 5, 7, 2, 4, 9, 0 }));
+        System.out.println(case123.maxProfit(new int[] {1,4,2,7 }));
     }
 
 }
