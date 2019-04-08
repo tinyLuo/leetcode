@@ -10,18 +10,24 @@ package com.ly.array;
 public class Case977 {
 
     public static int[] sortedSquares(int[] A) {
-        int i = 0, j = A.length - 1;
+        if(A==null || A.length==0) {
+            return A;
+        }
         int[] B = new int[A.length];
-        int point = B.length-1;
-        while (i <= j) {
-            if(Math.abs(A[i]) > Math.abs(A[j])) {
-                B[point] = A[i] * A[i];
-                i++;
+        int l = 0 , r = A.length -1 , point = A.length - 1;
+        while(l <= r) {
+            if(A[l] >= 0) {
+                B[point--] = A[r] * A[r];
+                r--;
             }else {
-                B[point] = A[j] * A[j];
-                j--;
+                if(A[l] + A[r] >= 0) {
+                    B[point--] = A[r] * A[r];
+                    r--;
+                }else {
+                    B[point--] = A[l] * A[l];
+                    l++;
+                }
             }
-            point--;
         }
         return B;
     }
