@@ -5,7 +5,7 @@ import com.ly.linkedlist.Case141.ListNode;
 public class Case142 {
     public static ListNode detectCycle(ListNode head) {
         if (head == null || head.next == null) {
-            return head;
+            return null;
         }
         ListNode slow = head;
         ListNode fast = head;
